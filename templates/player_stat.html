@@ -372,9 +372,10 @@ var color = d3.scaleOrdinal(d3.schemeCategory10);
          .data(test1)
          .enter().append("rect")
          .attr("class", "bar") 
-                  .attr("fill", function(d, i) {
-            return color(i);
-        })
+        //           .attr("fill", function(d, i) {
+        //     return color(i);
+        // })
+        .attr("fill","#f99e1a")
         .attr("id", function(d, i) {
             return i;
         })
@@ -542,9 +543,10 @@ var color = d3.scaleOrdinal(d3.schemeCategory10);
          .data(test1)
          .enter().append("rect")
          .attr("class", "bar") 
-                  .attr("fill", function(d, i) {
-            return color(i);
-        })
+        //           .attr("fill", function(d, i) {
+        //     return color(i);
+        // })
+        .attr("fill","#f99e1a")
         .attr("id", function(d, i) {
             return i;
         })
