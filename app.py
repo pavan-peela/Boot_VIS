@@ -93,35 +93,45 @@ North_america = top_1000[top_1000["Continent"]=='North_america']
 South_america = top_1000[top_1000["Continent"]=='South_america']
 
 data = {}
+data1={}
 data["name"] = "DISTRIBUTION OF TOP 1000 PLAERS DUE TO NATIONALITY"
 data["children"] = []
+data1["name"]="count per continent"
+data1["children"] = []
 # Split dataset into Continents:
 for continent in top_1000['Continent'].unique():
     
     continent_set = top_1000[top_1000["Continent"]==continent]
     continent_dict = {}
+    counter={}
+    counter["name"]=continent
+    
     continent_dict["name"] = continent
     continent_dict["children"] = []
-    
+    count=0
+    # print(len(continent_set['Nationality'].unique()))
     for country in continent_set['Nationality'].unique():
         
         countries_set = continent_set[continent_set['Nationality']==country][['Name', 'Overall']]
-        
+        # print(len(countries_set))
         country_dict = {}
+        counter["counter"]=[]
         country_dict["name"] = country
         country_dict["children"] = []
-        
+        count=count+len(countries_set.values)
+        counter["counter"].append(count)
+
         for player in countries_set.values:
             
             player_dict = {}
             player_dict['name'] = player[0]
             player_dict['size'] = player[1]
             country_dict["children"].append(player_dict)
-            
         continent_dict['children'].append(country_dict)
-        
+    # print(counter)
+    # print(count)
     data["children"].append(continent_dict)
-
+    data1["children"].append(counter)
 players_value = dataset.sort_values("ValueNum", ascending=False).head(20).reset_index()[["Name", "Overall", "PotentialPoints", "ValueNum", "Age"]]
 # print(players_value)
 players_value1 = dataset.sort_values("Age", ascending=False).reset_index()[["Name", "Overall", "PotentialPoints", "ValueNum", "Age"]]
@@ -157,7 +167,9 @@ def ageplayer():
 @app.route("/overall")
 def overallplayer():
     return pd.json.dumps(players_value2)
-
+@app.route("/piechart")
+def piechartplayer():
+    return pd.json.dumps(data1)
 
 if __name__ == "__main__":
     app.run(debug=True, port=7890)

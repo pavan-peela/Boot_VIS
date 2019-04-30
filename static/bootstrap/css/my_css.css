@@ -155,7 +155,25 @@ button:hover div{
 	opacity: 0;
 	transform: translate(100%,0);
 }
+div.tooltip {
+	position: absolute;
+	text-align: center;
+	padding: 5px;
+	font-size: 12px;
+	font-weight: bold;
+	background: #f99e1a;
+	border: 0px;
+	border-radius: 8px;
+}
 
+.tooltip p {
+	margin: 0;
+	padding: 0;
+}
+
+circle {
+	fill: rgba(40, 53, 79, .95);
+}
 button div{
 text-transform: uppercase;
 letter-spacing: 3px;
