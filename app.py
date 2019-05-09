@@ -59,7 +59,7 @@ dataset['OverMeanWage'] = dataset['WageNum'].apply(lambda x: overValue(x, mean_w
 dataset['PotentialPoints'] = dataset['Potential'] - dataset['Overall']
 dataset['Position'] = dataset['Preferred Positions'].str.split().str[0]
 dataset['PositionNum'] = dataset['Preferred Positions'].apply(lambda x: len(x.split()))
-
+# print(dataset['Position'])
 
 
 # List of countries for each continent
@@ -98,6 +98,7 @@ data["name"] = "DISTRIBUTION OF TOP 1000 PLAERS DUE TO NATIONALITY"
 data["children"] = []
 data1["name"]="count per continent"
 data1["children"] = []
+
 # Split dataset into Continents:
 for continent in top_1000['Continent'].unique():
     
@@ -139,6 +140,12 @@ players_value1 = dataset.sort_values("Age", ascending=False).reset_index()[["Nam
 players_value2 = dataset.sort_values("Overall", ascending=False).reset_index()[["Name", "Overall", "PotentialPoints", "ValueNum", "Age"]]
 # print(players_value2)
 players_value3 = dataset.sort_values("Age", ascending=False).reset_index()[["Name", "Overall", "PotentialPoints", "ValueNum", "Age","Preferred Positions"]]
+sorted_players = dataset.sort_values(["ValueNum"], ascending=False).head(10)
+players = sorted_players[["Photo" ,"Name" ,"Age" ,"Nationality" ,"Club", "Value"]].values
+sorted_players1 = dataset.sort_values(["WageNum"], ascending=False).head(10)
+players1 = sorted_players1[["Photo" ,"Name" ,"Age" ,"Nationality" ,"Club", "Wage"]].values
+value_distribution = dataset.sort_values("WageNum", ascending=False).reset_index().head(100)[["Name", "WageNum"]]
+value_distribution_values = value_distribution["WageNum"].apply(lambda x: x/1000)
 
 
 @app.route("/")
@@ -153,6 +160,10 @@ def bigplot():
 def dashboard():
     # return pd.json.dumps(data)
     return render_template('main_dash.html')
+@app.route("/dash3")
+def dashboard3():
+    # return pd.json.dumps(data)
+    return render_template('map.html')
 @app.route("/dash2")
 def dashboard_player():    
     return render_template('player_stat.html')
@@ -171,5 +182,16 @@ def overallplayer():
 def piechartplayer():
     return pd.json.dumps(data1)
 
+@app.route("/playersvalue")
+def playersvalue():
+    return pd.json.dumps(players)
+
+@app.route("/playerswage")
+def playerswage():
+    return pd.json.dumps(players1)
+
+@app.route("/wagedistribution")
+def wagedistribution():
+    return pd.json.dumps(value_distribution_values)
 if __name__ == "__main__":
     app.run(debug=True, port=7890)

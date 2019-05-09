@@ -62,6 +62,9 @@
           <li class="nav-item">
             <a class="nav-link" id="but2" href="#">Player Statistics</a>
           </li>
+          <li class="nav-item">
+                <a class="nav-link" href="/dash3">MAP</a>
+              </li>
           <!-- <li class="nav-item">
             <a class="nav-link" href="#">Contact</a>
           </li> -->
@@ -75,12 +78,19 @@
         <button data-hover="Plot ->" onclick="callme1(id)" id="/value"><div>Player</div></button>    
         <button data-hover="Plot ->" onclick="callme3(id)" id="/overall"><div>Overall</div></button>  
         <button data-hover="Plot ->" onclick="callme4(id)" id="/piechart"><div>Piechart</div></button>
+        <button data-hover="Plot ->" onclick="callme5(id)" id="/playersvalue"><div>playersvalue</div></button>
+        <button data-hover="Plot ->" onclick="callme6(id)" id="/playerswage"><div>playerswage</div></button>
+        <button data-hover="Plot ->" onclick="callme7(id)" id="/wagedistribution"><div>wagedistribution</div></button>
   </div>
   <div class="box">
         <svg width="680" height="500" id="svg2"></svg>
         <svg width="680" height="500" id="svg3"></svg>
         <svg width="680" height="700" id="svg4"></svg>
         <svg width="680" height="700" id="svg5"></svg>
+        <svg width="680" height="500" id="svg6"></svg>
+    
+        
+        
   </div>
 
  
@@ -145,6 +155,45 @@ function callme4(a){
       contentType: 'application/json; charset=utf-8',
 	  success: function(result) {
         plot5(result)
+	  },
+	  error: function(result) {
+		$("#error").html(result);
+	  }
+	});
+}
+function callme5(a){
+    $.ajax({
+	  type: 'GET',
+	  url: a,
+      contentType: 'application/json; charset=utf-8',
+	  success: function(result) {
+        plot6(result)
+	  },
+	  error: function(result) {
+		$("#error").html(result);
+	  }
+	});
+}
+function callme6(a){
+    $.ajax({
+	  type: 'GET',
+	  url: a,
+      contentType: 'application/json; charset=utf-8',
+	  success: function(result) {
+        plot7(result)
+	  },
+	  error: function(result) {
+		$("#error").html(result);
+	  }
+	});
+}
+function callme7(a){
+    $.ajax({
+	  type: 'GET',
+	  url: a,
+      contentType: 'application/json; charset=utf-8',
+	  success: function(result) {
+        plot8(result)
 	  },
 	  error: function(result) {
 		$("#error").html(result);
@@ -703,6 +752,161 @@ var svg = d3.select("#svg5").append("svg")
         
 
 }
+function tabulate(data, columns) {
+		var table = d3.select('body').append('table')
+		var thead = table.append('thead')
+		var	tbody = table.append('tbody');
+
+		// append the header row
+		thead.append('tr')
+		  .selectAll('th')
+		  .data(columns).enter()
+		  .append('th')
+		    .text(function (column) { return column; });
+
+		// create a row for each object in the data
+		var rows = tbody.selectAll('tr')
+		  .data(data)
+		  .enter()
+		  .append('tr');
+
+		// create a cell in each row for each column
+		var cells = rows.selectAll('td')
+		  .data(function (row) {
+		    return columns.map(function (column) {
+		      return {column: column, value: row[column]};
+		    });
+		  })
+		  .enter()
+		  .append('td')
+		    .text(function (d) { return d.value; });
+
+	  return table;
+	}
+
+function plot6(rawdata){
+    data=JSON.parse(rawdata)
+    // console.log(data[0])
+    var array=[]
+for(var i=0; i< 10;i++){
+        obj = {}
+        obj.Age= data[i][2];
+        obj.Value= data[i][5];
+        obj.Name=data[i][1];
+        array.push(obj);  
+    }
+data1=array
+// console.log(data1)
+    columns=["Age","Name","Value"]
+    tabulate(data1,columns)
+}
+
+function plot7(rawdata){
+    data=JSON.parse(rawdata)
+    // console.log(data)
+    var array=[]
+for(var i=0; i< 10;i++){
+        obj = {}
+        obj.Age= data[i][2];
+        obj.Wage= data[i][5];
+        obj.Name=data[i][1];
+        array.push(obj);  
+    }
+data1=array
+// console.log(data1)
+    columns=["Age","Name","Wage"]
+    tabulate(data1,columns)
+}
+
+function plot8(rawdata){
+    var margin = {top: 30, right: 20, bottom: 30, left: 50},
+    width = 680 - margin.left - margin.right,
+    height = 400 - margin.top - margin.bottom;
+
+
+// Set the ranges
+var x = d3.scaleLinear().range([0, width]);
+var y = d3.scaleLinear().range([height, 0]);
+
+// Define the axes
+var xAxis = d3.axisBottom().scale(x)
+    .ticks(10);
+
+var yAxis = d3.axisLeft().scale(y)
+    .ticks(10);
+
+
+var valueline = d3.line()
+    .x(function(d, i) { return x(d.x); }) // set the x values for the line generator
+    .y(function(d) { return y(d.y); }) // set the y values for the line generator 
+    .curve(d3.curveMonotoneX) // apply smoothing to the line  
+// Adds the svg canvas
+var svg = d3.select("#svg6")
+    .append("svg")
+    .attr('id','screeplot')
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom + 50)
+    .append("g")
+        .attr("transform", 
+              "translate(" + margin.left + "," + margin.top + ")");
+
+              var data = JSON.parse(rawdata);
+console.log(data[0])
+array=[]
+// console.log(data.length)
+for(var i=0; i< 100;i++){
+        obj = {}
+        obj.x=i;
+        
+        obj.y = data[i];
+        array.push(obj);
+        
+    }
+data=array
+console.log(data)
+var div = d3.select("body").append("div")
+            .attr("class", "tooltip")
+            .style("opacity", 0);
+var tooltip = d3.select("body").append("div")
+    .attr("class", "tooltip")
+    .style("opacity", 0);
+   
+  // Scale the range of the data
+  x.domain(d3.extent(data, function(d,i) { return d.x; }));
+  y.domain([d3.min(data,function(d){return d.y;}), d3.max(data, function(d) { return d.y; })]);
+
+
+
+  svg.append("path")
+        .attr("class", "line")
+        .attr("d", valueline(data));
+  
+
+
+svg.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(xAxis);
+
+    // Add the Y Axis
+    svg.append("g")
+        .attr("class", "y axis")
+        .call(yAxis);
+        svg.append("text")
+            .attr("class", "axis_label")
+            .attr("text-anchor", "middle")
+            .attr("transform", "translate("+ (-40) +","+(height/3)+")rotate(-90)")
+            .text("wage");
+
+    svg.append("text")
+        .attr("class", "axis_label")
+        .attr("text-anchor", "middle")
+        .attr("transform", "translate("+ (width/3 + 40) +","+(height+40)+")")
+        .text("top 100");
+
+}
+
+
   </script>
 </body>
 
