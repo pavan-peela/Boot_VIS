@@ -128,10 +128,34 @@ chart
     .group(outOfDateByCountry);
 chart.render();
 
+var chart = dc.scatterPlot('#scatter');
+
+   var hwDimension = data.dimension(function(data) { 
+      return [Math.floor(data.x), Math.floor(data.y)];
+   });
+   var hwGroup = hwDimension.group().reduceCount();
+
+   chart
+      .width(600)
+      .height(400)
+      .x(d3.scaleLinear().domain([0,10]))
+      .y(d3.scaleLinear().domain([0,1000]))
+      .brushOn(true)
+      .xAxisLabel("Height")
+      .yAxisLabel("Weight")
+      .symbolSize(8)
+      .clipPadding(10)
+      .dimension(hwDimension)
+      .group(hwGroup);
+
+   chart.render();
+
+
 }
 </script> 
 <body onload="callme('/piechart')">
-  <div id="test"></div>
+  <div id="test" style="margin: 15px;"></div>
+  <div id = "scatter" style="margin: 15px;"></div>
   <div id="chart" style="margin: 15px;"></div>
 </body>
 
