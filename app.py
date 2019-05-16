@@ -83,6 +83,8 @@ def find_continent(x, continents_list):
 dataset['Continent'] = dataset['Nationality'].apply(lambda x: find_continent(x, continents))
 dataset['total'] = 1
 dataset['json'] = dataset.apply(lambda x: x.to_json(), axis=1)
+dataset.dropna(how='any', inplace=True)
+print(dataset['Club'].isnull().sum())
 # dataset.to_json('temp.json', orient='records', lines=True)
 # print(dataset['json'])
 

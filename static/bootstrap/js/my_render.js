@@ -56,16 +56,65 @@ function draw_charts(raw_data){
 
     var data = crossfilter(data);
     
-    let dimensionCategory = data.dimension(item => item.Continent)
+    // Continent Group
+    let continent_category = data.dimension(item => item.Continent)
+    var continent_group = continent_category.group().reduceSum(item => 1)
+
     // let quantityByCategory = dimensionCategory.group().reduceSum(item => 1)
     // console.log(quantityByCategory)
     // var quantityByCategory = dimensionCategory.group(function reduceAdd(p, v) {
     //     return p + 1;
     //   });
-    var quantityByCategory = dimensionCategory.group().reduceSum(item => 1)
-
-    const firstResult = quantityByCategory.all()
-    console.log("First result:")
+    const firstResult = continent_group.all()
+    console.log("Continent Dimension:")
     console.log(firstResult)
 
+    // Club Group
+    let club_category = data.dimension(item => item.Club)
+    var club_group = club_category.group().reduceSum(item => 1)
+
+    console.log("Club Dimension:")
+    
+    function getTops(source_group) {
+        return {
+            all: function () {
+                return source_group.top(10);
+            }
+        };
+    }
+    var fakeGroup = getTops(club_group);
+    // console.log(fakeGroup)
+
+    var pie1 = dc.pieChart("#pie_cont");
+    pie1
+        .width(500)
+        .height(300)
+        .innerRadius(25)
+        .transitionDuration(1000)
+        .slicesCap(6)
+        // .attr("transform", "translate(50,50")
+        .legend(dc.legend().x(400).y(0))
+        .label(function(d) {
+            return d.key + ': ' + d.value; 
+        })
+        .dimension(continent_category)
+        .group(continent_group);
+    pie1.render();
+
+
+
+
+    var chart = dc.rowChart("#row_char");
+    chart
+        .width(500)
+        .height(300)
+        .dimension(club_category)
+        .group(fakeGroup)
+        .transitionDuration(400)
+        .ordinalColors(["#56B2EA","#E064CD","#F8B700","#78CC00","#7B71C5"])
+        .elasticX(true)
+
+        .xAxis().ticks(5);
+    chart.render();
+    
 }
