@@ -13,10 +13,25 @@
   <!-- Bootstrap core CSS -->
   <link href="../static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link href="../static/bootstrap/css/dash_css.css" rel="stylesheet">
-
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/dc/2.1.9/dc.css"/>
 </head>
+<script src="../static/jquery/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script src="../static/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../static/bootstrap/js/my_js.js"></script>
+  <script src="https://d3js.org/topojson.v2.min.js"></script>
+  <script src="//d3js.org/queue.v1.min.js"></script>
+  <script src="https://d3js.org/d3-geo-projection.v1.min.js"></script>
+  <script src="../static/bootstrap/js/tooltip.js"></script> 
+<script type="text/javascript" src="https://rawgithub.com/NickQiZhu/dc.js/master/web/js/crossfilter.js"></script>
+<script type="text/javascript" src="https://dc-js.github.io/dc.js/js/dc.js"></script>
 
-<body>
+<body onload="callme('/piechart')">
+  <!-- <div id="test" style="margin: 15px;"></div>
+  <div id = "scatter" style="margin: 15px;"></div>
+  <div id="chart" style="margin: 15px;"></div> -->
+
 
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
@@ -39,7 +54,7 @@
             <a class="nav-link" id="but2" href="/dash2">Player Statistics</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" id="but3" href="/dash3">MAP</a>
+            <a class="nav-link" id="but3" href="/dashboard">dashboard</a>
           </li>
           <!-- <li class="nav-item">
             <a class="nav-link" href="#">Contact</a>
@@ -53,12 +68,15 @@
   <div class="dash_container">
       <div class="dash_col">
         First One
+        <div id="test" style="margin: 15px;"></div>
       </div>
       <div class="dash_col">
           Second One
+          <div id="scatter" style="margin: 15px;"></div>
       </div>
       <div class="dash_col">
           Third One
+          <div id="chart" style="margin: 15px;"></div>
       </div>
   </div>
  
@@ -66,9 +84,97 @@
   <!-- Bootstrap core JavaScript -->
   <script src="../static/jquery/jquery.min.js"></script>
   <script src="../static/bootstrap/js/bootstrap.bundle.min.js"></script>
+  
   <!-- <script src="../static/bootstrap/js/my_js.js"></script> -->
 
+<script>
+  function callme(a){
+    console.log("_____")
+    $.ajax({
+        type: 'GET',
+        url: a,
+        contentType: 'application/json; charset=utf-8',
+        success: function(result) {
+        plot1(result)
+        },
+        error: function(result) {
+        $("#error").html(result);
+        }
+    });
+}
 
+  function plot1(rawdata){
+    data=JSON.parse(rawdata)
+    // console.log(data)
+    array=[]
+  // console.log(data.length)
+  for(var i=0; i< 7;i++){
+          obj = {}
+          obj.x=i;
+          obj.xname= data.children[i].name;
+          obj.y = data.children[i].counter[0];
+          array.push(obj);
+          
+      }
+  data=array
+  console.log(data)
+  var data = crossfilter(data);
+    // var chart = dc.scatterPlot("#test");
+    // var chart = dc.scatterPlot('#scatter');
+    let dimensionCategory = data.dimension(item => item.xname)
+  let quantityByCategory = dimensionCategory.group().reduceSum(item => item.y)
+  let countryCategory = data.dimension(item => item.x);
+  let outOfDateByCountry = countryCategory.group().reduceSum(item => item.y); 
+  var pie1 = dc.pieChart("#test");
+  pie1
+      .width(300)
+      .height(300)
+      .innerRadius(25)
+      .label(function(d) {
+          return d.key + ': ' + d.value; 
+      })
+      .dimension(dimensionCategory)
+      .group(quantityByCategory);
+  pie1.render();
+  
+  var chart = dc.barChart("#chart");
+  chart
+      .width(200)
+      .height(200)
+      .x(d3.scaleOrdinal())
+      .xUnits(dc.units.ordinal)
+      .xAxisLabel("continent id")
+       .yAxisLabel("count")
+      .elasticY(true)
+      .dimension(countryCategory)
+      .group(outOfDateByCountry);
+  chart.render();
+  
+  var chart = dc.scatterPlot('#scatter');
+  
+     var hwDimension = data.dimension(function(data) { 
+        return [Math.floor(data.x), Math.floor(data.y)];
+     });
+     var hwGroup = hwDimension.group().reduceCount();
+  
+     chart
+        .width(600)
+        .height(400)
+        .x(d3.scaleLinear().domain([0,10]))
+        .y(d3.scaleLinear().domain([0,1000]))
+        .brushOn(true)
+        .xAxisLabel("Height")
+        .yAxisLabel("Weight")
+        .symbolSize(8)
+        .clipPadding(10)
+        .dimension(hwDimension)
+        .group(hwGroup);
+  
+     chart.render();
+  
+  
+  }
+  </script> 
 </body>
 
 </html>
