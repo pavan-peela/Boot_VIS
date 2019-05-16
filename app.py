@@ -6,7 +6,7 @@ import numpy as np
 app = Flask(__name__)
 
 
-dataset_file = pd.read_csv('Project_Dataset/fifa-18-dataset/CompleteDataset.csv', header = 0)
+dataset_file = pd.read_csv('Project_Dataset/fifa-18-dataset/CompleteDataset.csv', header = 0, nrows=1000)
 Filter = [
     'Name', 
     'Age', 
@@ -82,7 +82,12 @@ def find_continent(x, continents_list):
     return np.NaN
 
 dataset['Continent'] = dataset['Nationality'].apply(lambda x: find_continent(x, continents))
-top_1000 = dataset.sort_values("Overall", ascending=False).reset_index().head(1000)[["Name", "Nationality", "Continent", "Overall", "Club"]]
+dataset['total'] = 1
+dataset['json'] = dataset.apply(lambda x: x.to_json(), axis=1)
+print(dataset['json'])
+
+
+top_1000 = dataset.sort_values("Overall", ascending=False).reset_index().head(500)[["Name", "Nationality", "Continent", "Overall", "Club"]]
 # print(top_1000)
 Africa = top_1000[top_1000["Continent"]=='Africa']
 Antarctica = top_1000[top_1000["Continent"]=='Antarctica']
@@ -170,6 +175,9 @@ def dashboard_player():
 @app.route("/dashboard")
 def dashboard_final():    
     return render_template('dashboard.html')
+@app.route("/my_render")
+def my_rendering():    
+    return render_template('my_render.html')
 
 
 @app.route("/value")
@@ -196,5 +204,12 @@ def playerswage():
 @app.route("/wagedistribution")
 def wagedistribution():
     return pd.json.dumps(value_distribution_values)
+
+@app.route("/sample_test")
+def sample_test():
+    print(len(dataset))
+    return pd.json.dumps(dataset['json'].values)
+
+# print(dataset['total'])
 if __name__ == "__main__":
     app.run(debug=True, port=7890)
