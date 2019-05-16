@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css?family=Lato');
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400,800);
+
+body{
+	width: 100%;
+	height: 100vh;
+	/* color: #fff; */
+	background: linear-gradient(-45deg, #EE7752, rgb(111, 144, 182), rgb(50, 133, 148), rgb(176, 123, 192));
+	background-size: 700% 700%;
+	position: relative;
+	animation: change 10s ease-in infinite;
+}
+
+@keyframes change{
+	0%{
+		background-position: 0 50%;
+	}
+	50%{
+		background-position: 100% 50%;
+	}
+	100%{
+		background-position: 0 50%;
+	}
+}
+
+div.dash_container{
+    display: inline-block;
+    width: 1570px;
+    margin-left: 30px;
+    padding-right: 30px;
+}
+.dash_col{
+    display: inline-block;
+    width: 510px;
+    height: 400px;
+}
