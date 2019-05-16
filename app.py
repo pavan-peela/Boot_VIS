@@ -167,6 +167,9 @@ def dashboard3():
 @app.route("/dash2")
 def dashboard_player():    
     return render_template('player_stat.html')
+@app.route("/dashboard")
+def dashboard_final():    
+    return render_template('dashboard.html')
 
 
 @app.route("/value")
