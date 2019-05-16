@@ -1,5 +1,5 @@
 console.log("my_render.js load!")
-
+// console.log()
 $( document ).ready(function() {
     console.log( "ready!" );
 
@@ -15,7 +15,9 @@ $( document ).ready(function() {
             console.log(error);
         }
     });
+
 });
+
 
 function draw_charts(raw_data){
     data=JSON.parse(raw_data)
@@ -44,22 +46,23 @@ function draw_charts(raw_data){
     // const firstResult = quantityByCategory.all()
     // console.log("First result:")
     // console.log(firstResult)
-    const arrayToObject = (array) =>
-    array.reduce((obj, item) => {
-        obj[item.id] = item
-        return obj
-    }, {})
-    const peopleObject = arrayToObject(data)
-    console.log(peopleObject)
+    // const arrayToObject = (array) =>
+    // array.reduce((obj, item) => {
+    //     obj[item.id] = item
+    //     return obj
+    // }, {})
+    // const peopleObject = arrayToObject(data)
+    // console.log(peopleObject)
 
     var data = crossfilter(data);
-
+    
     let dimensionCategory = data.dimension(item => item.Continent)
     // let quantityByCategory = dimensionCategory.group().reduceSum(item => 1)
     // console.log(quantityByCategory)
-    var quantityByCategory = dimensionCategory.group(function reduceAdd(p, v) {
-        return p + 1;
-      });
+    // var quantityByCategory = dimensionCategory.group(function reduceAdd(p, v) {
+    //     return p + 1;
+    //   });
+    var quantityByCategory = dimensionCategory.group().reduceSum(item => 1)
 
     const firstResult = quantityByCategory.all()
     console.log("First result:")

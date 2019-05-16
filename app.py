@@ -6,11 +6,10 @@ import numpy as np
 app = Flask(__name__)
 
 
-dataset_file = pd.read_csv('Project_Dataset/fifa-18-dataset/CompleteDataset.csv', header = 0, nrows=1000)
+dataset_file = pd.read_csv('Project_Dataset/fifa-18-dataset/CompleteDataset.csv', header = 0, nrows=3000)
 Filter = [
     'Name', 
     'Age', 
-    'Photo', 
     'Nationality', 
     'Overall', 
     'Potential', 
@@ -84,7 +83,8 @@ def find_continent(x, continents_list):
 dataset['Continent'] = dataset['Nationality'].apply(lambda x: find_continent(x, continents))
 dataset['total'] = 1
 dataset['json'] = dataset.apply(lambda x: x.to_json(), axis=1)
-print(dataset['json'])
+# dataset.to_json('temp.json', orient='records', lines=True)
+# print(dataset['json'])
 
 
 top_1000 = dataset.sort_values("Overall", ascending=False).reset_index().head(500)[["Name", "Nationality", "Continent", "Overall", "Club"]]
@@ -138,6 +138,7 @@ for continent in top_1000['Continent'].unique():
     # print(count)
     data["children"].append(continent_dict)
     data1["children"].append(counter)
+    # print(data1)
 players_value = dataset.sort_values("ValueNum", ascending=False).head(20).reset_index()[["Name", "Overall", "PotentialPoints", "ValueNum", "Age"]]
 # print(players_value)
 players_value1 = dataset.sort_values("Age", ascending=False).reset_index()[["Name", "Overall", "PotentialPoints", "ValueNum", "Age"]]
@@ -146,13 +147,16 @@ players_value2 = dataset.sort_values("Overall", ascending=False).reset_index()[[
 # print(players_value2)
 players_value3 = dataset.sort_values("Age", ascending=False).reset_index()[["Name", "Overall", "PotentialPoints", "ValueNum", "Age","Preferred Positions"]]
 sorted_players = dataset.sort_values(["ValueNum"], ascending=False).head(10)
-players = sorted_players[["Photo" ,"Name" ,"Age" ,"Nationality" ,"Club", "Value"]].values
+players = sorted_players[["Name" ,"Age" ,"Nationality" ,"Club", "Value"]].values
 sorted_players1 = dataset.sort_values(["WageNum"], ascending=False).head(10)
-players1 = sorted_players1[["Photo" ,"Name" ,"Age" ,"Nationality" ,"Club", "Wage"]].values
+players1 = sorted_players1[["Name" ,"Age" ,"Nationality" ,"Club", "Wage"]].values
 value_distribution = dataset.sort_values("WageNum", ascending=False).reset_index().head(100)[["Name", "WageNum"]]
 value_distribution_values = value_distribution["WageNum"].apply(lambda x: x/1000)
 
-
+# To dict conversion to get in the exact format
+data_dash = dataset.to_dict('records')
+# print(data_dash)
+# print(data_dash)
 @app.route("/")
 def helloworld():
 	return render_template('index.html')
@@ -207,8 +211,8 @@ def wagedistribution():
 
 @app.route("/sample_test")
 def sample_test():
-    print(len(dataset))
-    return pd.json.dumps(dataset['json'].values)
+    # print(len(dataset))
+    return pd.json.dumps(data_dash)
 
 # print(dataset['total'])
 if __name__ == "__main__":
