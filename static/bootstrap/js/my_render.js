@@ -110,11 +110,54 @@ function draw_charts(raw_data){
         .height(300)
         .dimension(club_category)
         .group(fakeGroup)
-        .transitionDuration(400)
+        .transitionDuration(1000)
         .ordinalColors(["#56B2EA","#E064CD","#F8B700","#78CC00","#7B71C5"])
         .elasticX(true)
 
         .xAxis().ticks(5);
     chart.render();
+
+
+    // Try Name Group
+    let name_category = data.dimension(item => item.Name)
+    var name_group = name_category.group().reduceSum(item => 1)
+
+    function names_getTops(source_group) {
+        return {
+            all: function () {
+                return source_group.top(500);
+            }
+        };
+    }
+    var name_fake = names_getTops(name_group);
+
+    const nameResult = name_group.all()
+    console.log("Name Dimension:")
+    console.log(name_fake.all())
     
+    var chart = dc.scatterPlot('#scatter_char');
+  
+     var hwDimension = data.dimension(function(data) { 
+        return [data.Name, Math.floor(data.Overall)];
+     });
+     var hwGroup = hwDimension.group();
+
+     const pr_result = hwGroup.all()
+    console.log("hwGroup Dimension:")
+    console.log(pr_result)
+  
+     chart
+        .width(500)
+        .height(400)
+        .x(d3.scaleLinear().domain([0,0]))
+        .y(d3.scaleLinear().domain([0,0]))
+        .brushOn(true)
+        // .xAxisLabel("Height")
+        // .yAxisLabel("Weight")
+        .symbolSize(8)
+        .clipPadding(10)
+        .dimension(hwDimension)
+        .group(hwGroup);
+  
+     chart.render();
 }

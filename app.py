@@ -157,6 +157,7 @@ value_distribution_values = value_distribution["WageNum"].apply(lambda x: x/1000
 
 # To dict conversion to get in the exact format
 data_dash = dataset.to_dict('records')
+# print(dataset['Wage'])
 # print(data_dash)
 # print(data_dash)
 @app.route("/")
