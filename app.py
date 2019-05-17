@@ -105,6 +105,7 @@ data["name"] = "DISTRIBUTION OF TOP 1000 PLAERS DUE TO NATIONALITY"
 data["children"] = []
 data1["name"]="count per continent"
 data1["children"] = []
+data1["dataset"]=[]
 
 # Split dataset into Continents:
 for continent in top_1000['Continent'].unique():
@@ -140,6 +141,8 @@ for continent in top_1000['Continent'].unique():
     # print(count)
     data["children"].append(continent_dict)
     data1["children"].append(counter)
+    testdata = dataset.sort_values("Overall", ascending=False).head(20).reset_index()[["Name", "Overall","Continent", "PotentialPoints", "ValueNum", "Age"]]
+    data1["dataset"]=testdata
     # print(data1)
 players_value = dataset.sort_values("ValueNum", ascending=False).head(20).reset_index()[["Name", "Overall", "PotentialPoints", "ValueNum", "Age"]]
 # print(players_value)

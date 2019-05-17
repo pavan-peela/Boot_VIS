@@ -678,9 +678,9 @@ var color = d3.scaleOrdinal(d3.schemeCategory10);
 
 function plot5(rawdata){
     data=JSON.parse(rawdata)
-
+console.log(data)
 var array=[]
-for(var i=0; i< 7;i++){
+for(var i=0; i< 5;i++){
         obj = {}
         obj.x=i;
         obj.xname= data.children[i].name;

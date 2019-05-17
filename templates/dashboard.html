@@ -74,13 +74,27 @@
         <!-- First One -->
         <div id="test" style="margin: 15px;"></div>
       </div>
+  
+      <div class="dash_col">
+          <!-- Third One -->
+          <div id="chart" style="margin: 15px;"></div>
+      </div>
+
+      <div class="dash_col">
+          <!-- Third One -->
+          <div id="chart1" style="margin: 15px;"></div>
+      </div>
+      <div class="dash_col">
+          <!-- Third One -->
+          <div id="chart2" style="margin: 15px;"></div>
+      </div>
       <div class="dash_col">
           <!-- Second One -->
           <div id="scatter" style="margin: 15px;"></div>
       </div>
       <div class="dash_col">
           <!-- Third One -->
-          <div id="chart" style="margin: 15px;"></div>
+          <div id="chart3" style="margin: 15px;"></div>
       </div>
   </div>
  
@@ -112,18 +126,19 @@
     data=JSON.parse(rawdata)
     console.log(data)
     array=[]
+    array1=[]
   // console.log(data.length)
   for(var i=0; i< 4;i++){
           obj = {}
           obj.x=i;
           obj.xname= data.children[i].name;
           obj.y = data.children[i].counter[0];
-          array.push(obj);
-          
+          array.push(obj);         
       }
+
   data=array
   console.log("dc data");
-  console.log(data)
+  // console.log(data)
   var data = crossfilter(data);
     // var chart = dc.scatterPlot("#test");
     // var chart = dc.scatterPlot('#scatter');
@@ -156,28 +171,106 @@
       .dimension(countryCategory)
       .group(outOfDateByCountry);
   chart.render();
+  datanew=JSON.parse(rawdata)
+  // console.log(datanew)
+  array1=[]
+// console.log(Object.keys(datanew.dataset.Name).length)
+for(var i=0; i< Object.keys(datanew.dataset.Name).length;i++){
+        obj = {}
+        obj.x=i;
+        obj.z=datanew.dataset.Continent[i]
+        obj.xname= datanew.dataset.Name[i];
+        obj.y = datanew.dataset.Overall[i];
+        obj.k =datanew.dataset.ValueNum[i]/1000000 ;
+        obj.a=datanew.dataset.Age[i]
+        array1.push(obj);
+        
+    }
+    datanew=array1
+  var chart = dc.lineChart('#scatter');
   
-  var chart = dc.scatterPlot('#scatter');
+ console.log(datanew)
+      var ndx            = crossfilter(datanew),
+          fruitDimension = ndx.dimension(function(d) {return d.x;}),
+          sumGroup       = fruitDimension.group().reduceSum(function(d) {return d.y;});
+      chart
+          .width(468)
+          .height(280)
+          .x(d3.scaleBand())
+          .y(d3.scaleLinear().domain([80,100]))
+          .xUnits(dc.units.ordinal)
+          .brushOn(false)
+          .xAxisLabel('top 20 player ID')
+          .yAxisLabel('Overall')
+          .dimension(fruitDimension)
+          .group(sumGroup);
+      chart.render();
+      
+      let countryCategory1 = ndx.dimension(item => item.x);
+  let outOfDateByCountry1 = countryCategory1.group().reduceSum(item => item.y); 
+      var chart = dc.barChart("#chart1");
+  chart
+      .width(400)
+      .height(200)
+      .x(d3.scaleOrdinal())
+      .xUnits(dc.units.ordinal)
+      .xAxisLabel(" top 20 player id")
+       .yAxisLabel("overall")
+      .elasticY(true)
+      .dimension(countryCategory1)
+      .group(outOfDateByCountry1);
+  chart.render();
+
+  let countryCategory2 = ndx.dimension(item => item.x);
+  let outOfDateByCountry2 = countryCategory2.group().reduceSum(item => item.k ); 
+      var chart = dc.barChart("#chart2");
+  chart
+      .width(400)
+      .height(200)
+      .x(d3.scaleOrdinal())
+      .xUnits(dc.units.ordinal)
+      .xAxisLabel(" top 20 player id")
+       .yAxisLabel("Valuenum in Million")
+      .elasticY(true)
+      .dimension(countryCategory2)
+      .group(outOfDateByCountry2);
+  chart.render();
+
+  let countryCategory3 = ndx.dimension(item => item.x);
+  let outOfDateByCountry3 = countryCategory3.group().reduceSum(item => item.a); 
+      var chart = dc.barChart("#chart3");
+  chart
+      .width(400)
+      .height(200)
+      .x(d3.scaleOrdinal())
+      .xUnits(dc.units.ordinal)
+      .xAxisLabel(" top 20 player id")
+       .yAxisLabel("age")
+      .elasticY(true)
+      .dimension(countryCategory3)
+      .group(outOfDateByCountry3);
+  chart.render();
+  // var chart = dc.scatterPlot('#scatter');
   
-     var hwDimension = data.dimension(function(data) { 
-        return [Math.floor(data.x), Math.floor(data.y)];
-     });
-     var hwGroup = hwDimension.group().reduceCount();
+  //    var hwDimension = data.dimension(function(data) { 
+  //       return [Math.floor(data.x), Math.floor(data.y)];
+  //    });
+  //    var hwGroup = hwDimension.group().reduceCount();
   
-     chart
-        .width(600)
-        .height(400)
-        .x(d3.scaleLinear().domain([0,10]))
-        .y(d3.scaleLinear().domain([0,1000]))
-        .brushOn(true)
-        .xAxisLabel("Height")
-        .yAxisLabel("Weight")
-        .symbolSize(8)
-        .clipPadding(10)
-        .dimension(hwDimension)
-        .group(hwGroup);
+  //    chart
+  //       .width(600)
+  //       .height(400)
+  //       .x(d3.scaleLinear().domain([0,10]))
+  //       .y(d3.scaleLinear().domain([0,1000]))
+  //       .brushOn(true)
+  //       .xAxisLabel("Height")
+  //       .yAxisLabel("Weight")
+  //       .symbolSize(8)
+  //       .clipPadding(10)
+  //       .dimension(hwDimension)
+  //       .group(hwGroup);
   
-     chart.render();
+  //    chart.render();
   
   
   }
