@@ -1,6 +1,9 @@
 console.log("my_render.js load!")
 // console.log()
 $( document ).ready(function() {
+    $('#submit').on('click', function (){
+        
+    });
     console.log( "ready!" );
 
     $.ajax({

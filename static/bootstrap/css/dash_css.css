@@ -34,3 +34,24 @@ div.dash_container{
     width: 510px;
     height: 400px;
 }
+
+#dynamic_input{
+    width: auto;
+    height: 50px;
+    border: 4px;
+    
+    /* background: rgb(145, 201, 201); */
+}
+#submit{
+    /* float: right; */
+    margin-left: 630px;
+    margin-top: 5px;
+}
+#players_data_input{
+    background: rgb(142, 194, 214);
+    width: 200px;
+}
+#first{
+    margin-top: 5px;
+    margin-left: 240px;
+}

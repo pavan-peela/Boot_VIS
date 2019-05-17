@@ -62,7 +62,7 @@
           </li>
           <li class="nav-item">
                 <a class="nav-link" id="but3" href="/my_render">My Render</a>
-            </li>
+          </li>
           <!-- <li class="nav-item">
             <a class="nav-link" href="#">Contact</a>
           </li> -->
@@ -70,6 +70,25 @@
       </div>
     </div>
   </nav>
+  <div id="dynamic_input">
+        <div class="row">
+                <!-- <div class="col-md-3"></div> -->
+                <div class="col-md-3" id="first">
+                        <select id="players_data_input" class="form-control" onchange="triggerOperation()">
+                                <!-- <option value="0">Please select Range</option> -->
+                                <option value="1">0 - 3000</option>
+                                <option value="2">3000 - 6000</option>
+                                <option value="3">6000 - 10000</option>
+                        </select>
+                </div>
+                <div class="col-md-3">
+                   <div class="col-md-2">
+                    <button id="submit" type="button" class="btn btn-success">Rest</button>
+                   </div> 
+                </div>
+                <!-- <div class="col-md-3"></div> -->
+              </div>
+  </div>
 
   
   <div class="dash_container">
