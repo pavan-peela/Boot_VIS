@@ -96,6 +96,14 @@
           <!-- Third One -->
           <div id="chart3" style="margin: 15px;"></div>
       </div>
+      <div class="dash_col">
+          <!-- Third One -->
+          <div id="scatter1" style="margin: 15px;"></div>
+      </div>
+      <div class="dash_col">
+          <!-- Third One -->
+          <div id="testme" style="margin: 15px;"></div>
+      </div>
   </div>
  
 
@@ -122,7 +130,7 @@
     });
 }
 
-  function plot1(rawdata){
+function plot1(rawdata){
     data=JSON.parse(rawdata)
     console.log(data)
     array=[]
@@ -250,7 +258,7 @@ for(var i=0; i< Object.keys(datanew.dataset.Name).length;i++){
       .dimension(countryCategory3)
       .group(outOfDateByCountry3);
   chart.render();
-  
+
   // var chart = dc.scatterPlot('#scatter');
   
   //    var hwDimension = data.dimension(function(data) { 
@@ -273,7 +281,37 @@ for(var i=0; i< Object.keys(datanew.dataset.Name).length;i++){
   
   //    chart.render();
   
+  var chart = dc.scatterPlot('#scatter1');
+  // var mycrossfilter = crossfilter(datanew);
+
+
+   var hwDimension = ndx.dimension(function(data) { 
+      return [data.x, Math.floor(data.y)];
+   });
+   var hwGroup = hwDimension.group().reduceCount();
+
+   chart
+      .width(500)
+      .height(400)
+      .x(d3.scaleLinear().domain([0,20]))
+      // .x(d3.scaleBand().domain(["Europe","South America","Antarctica","Australia Oceania","Asia","North America","Africa"]))
+      .y(d3.scaleLinear().domain([80,100]))
+      .brushOn(true)
+      .xAxisLabel("20 itmes from the dataset")
+      .yAxisLabel("overall")
+      .symbolSize(8)
+      .label(function(d) { console.log(d)
+          return d.key + ': ' + d.value; 
+      })
+      .clipPadding(10)
+      .dimension(hwDimension)
+      .group(hwGroup);
+
+   chart.render();
   
+
+
+
   }
   </script> 
 </body>
