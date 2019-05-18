@@ -1,23 +1,42 @@
 console.log("my_render.js load!")
 // console.log()
 $( document ).ready(function() {
-    $('#submit').on('click', function (){
-        
-    });
     console.log( "ready!" );
+    $('#submit').on('click', function (){
+
+
+    // $.ajax({
+    //     type: 'GET',
+    //     contentType: 'application/json',
+    //     url: 'sample_test',
+    //     success: function (e) {
+    //         console.log("Success Call -> Sending data to draw charts");
+    //         draw_charts(e);
+    //     },
+    //     error: function(error) {
+    //         console.log(error);
+    //     }
+    // });
+    var range = document.getElementById('players_data_input').value;
+    console.log("range : ");
+    console.log(range)
 
     $.ajax({
-        type: 'GET',
+        type: 'POST',
         contentType: 'application/json',
-        url: 'sample_test',
+        data: JSON.stringify(range, null, '\t'),
+        url: 'range_include',
         success: function (e) {
             console.log("Success Call -> Sending data to draw charts");
+            // console.log(e)
             draw_charts(e);
         },
         error: function(error) {
             console.log(error);
         }
     });
+
+});
 
 });
 

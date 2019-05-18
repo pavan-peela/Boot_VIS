@@ -1,12 +1,13 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 import pandas as pd
 import numpy as np
+import json
 
 
 app = Flask(__name__)
 
 
-dataset_file = pd.read_csv('Project_Dataset/fifa-18-dataset/CompleteDataset.csv', header = 0, nrows=3000)
+dataset_file = pd.read_csv('Project_Dataset/fifa-18-dataset/CompleteDataset.csv', header = 0, nrows=10000)
 Filter = [
     'Name', 
     'Age', 
@@ -158,11 +159,11 @@ players1 = sorted_players1[["Name" ,"Age" ,"Nationality" ,"Club", "Wage"]].value
 value_distribution = dataset.sort_values("WageNum", ascending=False).reset_index().head(100)[["Name", "WageNum"]]
 value_distribution_values = value_distribution["WageNum"].apply(lambda x: x/1000)
 
+################ Peels Processing ##################
+
 # To dict conversion to get in the exact format
 data_dash = dataset.to_dict('records')
-# print(dataset['Wage'])
-# print(data_dash)
-# print(data_dash)
+
 @app.route("/")
 def helloworld():
 	return render_template('index.html')
@@ -219,6 +220,29 @@ def wagedistribution():
 def sample_test():
     # print(len(dataset))
     return pd.json.dumps(data_dash)
+
+@app.route('/range_include', methods = ['POST'])
+def range_include():
+    temp = request.get_json()
+    print('range received :' ,temp)
+    if temp == '1':
+        data_3000 = dataset.sort_values("Overall", ascending=False).head(3000).reset_index()
+        # print(data_3000)
+        return pd.json.dumps(data_3000.to_dict('records'))
+    if temp == '2':
+        integer_location = np.where(dataset.index == 3000)[0][0]
+        start = max(0, integer_location +43)
+        end = max(1, 6000)
+        dfRange = dataset.iloc[start:end]
+        print(start, end, 'values')
+        return pd.json.dumps(dfRange.to_dict('records'))
+    if temp == '3':
+        integer_location = np.where(dataset.index == 6000)[0][0]
+        start = max(0, integer_location +100)
+        end = max(1, 10000)
+        dfRange = dataset.iloc[start:end]
+        print(start, end, 'values')
+        return pd.json.dumps(dfRange.to_dict('records'))
 
 # print(dataset['total'])
 if __name__ == "__main__":
