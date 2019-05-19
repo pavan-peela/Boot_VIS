@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-
+<style>
+            #rightbox{ 
+                float:right; 
+             
+                width:25%; 
+                height:280px; 
+            }</style>
 <head>
 
   <meta charset="utf-8">
@@ -91,7 +97,7 @@
   </div>
 
   
-  <div class="dash_container">
+  <div class="dash_container" float="top">
       <div class="dash_col" id = "pie_cont" style="margin-top: 30px;">
         <!-- First One -->
         <!-- <div id="continent" style="margin-left: 15px; margin-top: 30px;"></div> -->
@@ -100,15 +106,28 @@
           <!-- Third One -->
           <div id="chart" style="margin: 15px;"></div>
       </div>
-      <div class="dash_col_extend" id = "row_char" style="margin-top: 30px;">
+        <!-- <div class="dash_container"> -->
+            <div id = "rightbox"> 
+                <!-- <div style="text-align:right; margin:0px auto 0px auto;"> -->
+                   <div class="dash_col_extend" id = "row_char" style="margin-top: 30px;">
+                      <!-- Second One -->
+                      <!-- <div id="scatter" style="margin: 15px;"></div> -->
+                </div>
+              </div>
+      <!-- <div class="dash_col_extend" id = "row_char" style="margin-top: 30px;"> -->
             <!-- Second One -->
             <!-- <div id="scatter" style="margin: 15px;"></div> -->
-      </div>
-      <div class="dash_col_three" id = "player_stat" style="margin-top: 30px;">
+      <!-- </div> -->
+      <!-- <div class="dash_col_three" id = "player_stat" style="margin-top: 105px;"> -->
             <!-- Third One -->
-            <div id="chart" style="margin: 15px;"></div>
-        </div>
+            <!-- <div id="chart" style="margin: 15px;"></div> -->
+        <!-- </div> -->
   </div>
+  <div class="dash_col_three" id = "player_stat" style="margin-top: 105px;">
+      <!-- Third One -->
+      <!-- <div id="chart" style="margin: 15px;"></div> -->
+  </div>
+
  
 
   <!-- Bootstrap core JavaScript -->
