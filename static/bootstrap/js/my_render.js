@@ -100,7 +100,7 @@ function draw_charts(raw_data){
     function getTops(source_group) {
         return {
             all: function () {
-                return source_group.top(10);
+                return source_group.top(20);
             }
         };
     }
@@ -123,63 +123,141 @@ function draw_charts(raw_data){
         .group(continent_group);
     pie1.render();
 
+    // Bar Country Chart
+    let nationality_dimension = data.dimension(item => item.Nationality);
+    let nationality_group = nationality_dimension.group().reduceSum(item => 1); 
+
+    // function getTops(source_group) {
+    //     return {
+    //         all: function () {
+    //             return source_group.top(10);
+    //         }
+    //     };
+    // }
+    // var nationality_fakeGroup = getTops(nationality_group);
+
+    var pie2 = dc.pieChart("#bar_char");
+    pie2
+        .width(500)
+        .height(300)
+        .innerRadius(50)
+        .transitionDuration(1000)
+        .slicesCap(7)
+        // .attr("transform", "translate(50,50")
+        .legend(dc.legend().x(400).y(0))
+        // .label(function(d) {
+        //     return d.key; 
+        // })
+        .on('pretransition', function(chart) {
+            chart.selectAll('text.pie-slice').text(function(d) {
+                console.log("pie 3 d")
+                console.log(d)
+                return dc.utils.printSingleValue(d.data.key );
+            })
+        })
+
+        .dimension(nationality_dimension)
+        .group(nationality_group);
+    pie2.render();
+
+    // End of Bar
 
 
 
     var chart = dc.rowChart("#row_char");
     chart
         .width(500)
-        .height(300)
+        .height(800)
         .dimension(club_category)
         .group(fakeGroup)
         .transitionDuration(1000)
-        .ordinalColors(["#56B2EA","#E064CD","#F8B700","#78CC00","#7B71C5"])
+        // .ordinalColors(["#56B2EA","#E064CD","#F8B700","#78CC00","#7B71C5"])
         .elasticX(true)
 
         .xAxis().ticks(5);
     chart.render();
 
 
-    // Try Name Group
-    let name_category = data.dimension(item => item.Name)
-    var name_group = name_category.group().reduceSum(item => 1)
+    //  Preferred Positions
+    let pre_pos_dimension = data.dimension(item => item.pre_pos);
+    let pre_pos_group = pre_pos_dimension.group().reduceSum(item => 1); 
 
-    function names_getTops(source_group) {
-        return {
-            all: function () {
-                return source_group.top(500);
-            }
-        };
-    }
-    var name_fake = names_getTops(name_group);
+    const res = pre_pos_group.all()
+    console.log("Pre Pos Dimension:")
+    console.log(res)
 
-    const nameResult = name_group.all()
-    console.log("Name Dimension:")
-    console.log(name_fake.all())
-    
-    var chart = dc.scatterPlot('#scatter_char');
-  
-     var hwDimension = data.dimension(function(data) { 
-        return [data.Name, Math.floor(data.Overall)];
-     });
-     var hwGroup = hwDimension.group();
+    var fakeGroup3 = getTops(pre_pos_group);
+    // console.log(fakeGroup)
 
-     const pr_result = hwGroup.all()
-    console.log("hwGroup Dimension:")
-    console.log(pr_result)
-  
-     chart
+    var pie3 = dc.pieChart("#player_stat");
+    pie3
         .width(500)
-        .height(400)
-        .x(d3.scaleLinear().domain([0,0]))
-        .y(d3.scaleLinear().domain([0,0]))
-        .brushOn(true)
-        // .xAxisLabel("Height")
-        // .yAxisLabel("Weight")
-        .symbolSize(8)
-        .clipPadding(10)
-        .dimension(hwDimension)
-        .group(hwGroup);
+        .height(300)
+        .innerRadius(50)
+        .transitionDuration(1000)
+        .externalLabels(50)
+        .externalRadiusPadding(50)
+        .slicesCap(6)
+        // .attr("transform", "translate(50,50")
+        .legend(dc.legend().x(400).y(0))
+        .label(function(d) {
+            return d.key + ': ' + d.value; 
+        })
+        .dimension(pre_pos_dimension)
+        .group(fakeGroup3);
+
+    pie3.on('pretransition', function(chart) {
+        chart.selectAll('.dc-legend-item text')
+            .text('')
+            .append('tspan')
+            .text(function(d) { return d.key; })
+            .append('tspan')
+            .attr('x', 100)
+            .attr('text-anchor', 'end')
+            .text(function(d) { return d.value; });
+    });
+    pie3.render();
+
+    // Try Name Group
+    // let name_category = data.dimension(item => item.Name)
+    // var name_group = name_category.group().reduceSum(item => 1)
+
+    // function names_getTops(source_group) {
+    //     return {
+    //         all: function () {
+    //             return source_group.top(500);
+    //         }
+    //     };
+    // }
+    // var name_fake = names_getTops(name_group);
+
+    // const nameResult = name_group.all()
+    // console.log("Name Dimension:")
+    // console.log(name_fake.all())
+    
+    // var chart = dc.scatterPlot('#scatter_char');
   
-     chart.render();
+    //  var hwDimension = data.dimension(function(data) { 
+    //     return [data.Name, Math.floor(data.Overall)];
+    //  });
+    //  var hwGroup = hwDimension.group();
+
+    //  const pr_result = hwGroup.all()
+    // console.log("hwGroup Dimension:")
+    // console.log(pr_result)
+  
+    //  chart
+    //     .width(500)
+    //     .height(400)
+    //     .x(d3.scaleLinear().domain([0,0]))
+    //     .y(d3.scaleLinear().domain([0,0]))
+    //     .brushOn(true)
+    //     // .xAxisLabel("Height")
+    //     // .yAxisLabel("Weight")
+    //     .symbolSize(8)
+    //     .clipPadding(10)
+    //     .dimension(hwDimension)
+    //     .group(hwGroup);
+  
+    //  chart.render();
 }

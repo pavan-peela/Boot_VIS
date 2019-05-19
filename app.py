@@ -60,6 +60,7 @@ dataset['PotentialPoints'] = dataset['Potential'] - dataset['Overall']
 dataset['Position'] = dataset['Preferred Positions'].str.split().str[0]
 dataset['PositionNum'] = dataset['Preferred Positions'].apply(lambda x: len(x.split()))
 # print(dataset['Position'])
+dataset['pre_pos'] = dataset['Preferred Positions']
 
 
 # List of countries for each continent
