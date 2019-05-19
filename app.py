@@ -20,6 +20,7 @@ Filter = [
     'Preferred Positions'
 ]
 dataset = pd.DataFrame(dataset_file, columns=Filter)
+dataset = dataset.drop_duplicates(subset='Name')
 #data cleaning
 def str2number(amount):
     if amount[-1] == 'M':

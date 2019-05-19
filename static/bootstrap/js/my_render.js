@@ -46,36 +46,6 @@ function draw_charts(raw_data){
     
     console.log(data)
 
-    // array=[]
-    // for(var i=0; i< 4;i++){
-    //     obj = {}
-    //     obj.x=i;
-    //     obj.continent= data.children[i].name;
-    //     obj.counter = data.children[i].counter[0];
-    //     array.push(obj);
-        
-    // }
-    // data=array
-    // console.log(data)
-
-    // var data = crossfilter(data);
-    // // var chart = dc.scatterPlot("#test");
-    // // var chart = dc.scatterPlot('#scatter');
-    // let dimensionCategory = data.dimension(item => item.continent)
-    // let quantityByCategory = dimensionCategory.group().reduceSum(item => item.counter)
-    // // console.log(quantityByCategory)
-
-    // const firstResult = quantityByCategory.all()
-    // console.log("First result:")
-    // console.log(firstResult)
-    // const arrayToObject = (array) =>
-    // array.reduce((obj, item) => {
-    //     obj[item.id] = item
-    //     return obj
-    // }, {})
-    // const peopleObject = arrayToObject(data)
-    // console.log(peopleObject)
-
     var data = crossfilter(data);
     
     // Continent Group
@@ -265,31 +235,60 @@ function draw_charts(raw_data){
   
 //  console.log(datanew)
     //   var ndx            = crossfilter(data),
-       let fruitDimension = data.dimension(item => item.index);
+       let fruitDimension = data.dimension(item => item.Name);
        console.log("---")
        
      let sumGroup = fruitDimension.group().reduceSum(item => item.Overall); 
-     function getTops(source_group) {
+     function getTops1(source_group) {
         return {
             all: function () {
-                return source_group.top(20);
+                return source_group.top(30);
             }
         };
     }
-    var fakeGroup1 = getTops(sumGroup);
-     console.log(sumGroup.all())
+    var fakeGroup1 = getTops1(sumGroup);
+     console.log(fakeGroup1.all())
         //   fruitDimension = ndx.dimension(function(d) {console.log("=-=-=");return d.Overall;}),
         //   sumGroup       = fruitDimension.group().reduceSum(function(d) {return d.Overall;});
       chart1
-          .width(468)
-          .height(280)
-          .x(d3.scaleOrdinal())
-          .y(d3.scaleLinear().domain([85,100]))
+          .width(500)
+          .height(300)
+          .x(d3.scaleBand())
+          .y(d3.scaleLinear().domain([60,93]))
+        //   .ordinalColors(['#e41a1c','#377eb8','#4daf4a','#984ea3','#ff7f00','#ffff33','#a65628'])
           .xUnits(dc.units.ordinal)
           .brushOn(false)
-          .xAxisLabel('top 20 player ID')
-          .yAxisLabel('Overall')
+          .barPadding(0.4)
+          .outerPadding(0.15)
           .dimension(fruitDimension)
           .group(fakeGroup1);
       chart1.render();
+
+    // var chart123 = dc.rowChart("#linechart");
+    // chart123
+    //     .width(500)
+    //     .height(800)
+    //     .dimension(fruitDimension)
+    //     .group(fakeGroup1)
+    //     .transitionDuration(1000)
+    //     // .ordinalColors(["#56B2EA","#E064CD","#F8B700","#78CC00","#7B71C5"])
+    //     .elasticX(true)
+
+    //     .xAxis().ticks(5);
+    // var chart123 = dc.lineChart("#linechart");
+    //     chart123
+    //       .width(500)
+    //       .height(400)
+    //       .x(d3.scaleBand())
+    //       .y(d3.scaleLinear().domain([55,94]))
+    //       .xUnits(dc.units.ordinal)
+    //       .brushOn(true)
+    //     //   .xAxisLabel('Fruit')
+    //     //   .yAxisLabel('Quantity Sold')
+    //       .dimension(fruitDimension)
+    //       .group(fakeGroup1);
+    // //   chart.render();
+    // chart123.render();
+    
+
 }

@@ -66,6 +66,10 @@ div.dash_container{
     margin-left: 240px;
 }
 /* DC.js Styling */
+#linechart .x.axis text {
+    text-anchor: end !important;
+    transform: rotate(-45deg);
+}
 
 
 /* Will write later */
