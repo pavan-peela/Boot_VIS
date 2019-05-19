@@ -260,4 +260,36 @@ function draw_charts(raw_data){
     //     .group(hwGroup);
   
     //  chart.render();
+
+    var chart1 = dc.barChart('#linechart');
+  
+//  console.log(datanew)
+    //   var ndx            = crossfilter(data),
+       let fruitDimension = data.dimension(item => item.index);
+       console.log("---")
+       
+     let sumGroup = fruitDimension.group().reduceSum(item => item.Overall); 
+     function getTops(source_group) {
+        return {
+            all: function () {
+                return source_group.top(20);
+            }
+        };
+    }
+    var fakeGroup1 = getTops(sumGroup);
+     console.log(sumGroup.all())
+        //   fruitDimension = ndx.dimension(function(d) {console.log("=-=-=");return d.Overall;}),
+        //   sumGroup       = fruitDimension.group().reduceSum(function(d) {return d.Overall;});
+      chart1
+          .width(468)
+          .height(280)
+          .x(d3.scaleOrdinal())
+          .y(d3.scaleLinear().domain([85,100]))
+          .xUnits(dc.units.ordinal)
+          .brushOn(false)
+          .xAxisLabel('top 20 player ID')
+          .yAxisLabel('Overall')
+          .dimension(fruitDimension)
+          .group(fakeGroup1);
+      chart1.render();
 }
