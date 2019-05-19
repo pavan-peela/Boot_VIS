@@ -260,6 +260,44 @@ function draw_charts(raw_data){
           .brushOn(false)
           .barPadding(0.4)
           .outerPadding(0.15)
+          .ordinalColors(['url(#barBg)','rgb(255, 127, 14)'])
+          .renderlet(function (chart1) {
+
+            const barBG = d3.select('#linechart')
+                            .select('svg')
+                            .append('defs')
+                            .append("linearGradient");
+      
+            // https://stackoverflow.com/questions/56118745/barchart-svg-gradient-fill
+            barBG
+              .attr("id", "barBg")
+              .attr("x1", "0")
+              .attr("x2", "0")
+              .attr("y1", "200")
+              .attr("y2", "00")
+              .attr("gradientUnits", "userSpaceOnUse");
+      
+            barBG
+              .append("stop")
+              .attr("offset", "0%")
+              .attr("stop-color", "rgb(31, 119, 180)")
+              .attr("stop-opacity", "0.1");
+      
+      
+            barBG
+              .append("stop")
+              .attr("offset", "100%")
+              .attr("stop-color", "rgb(31, 119, 180)")
+              .attr("stop-opacity", "1");
+      
+            chart1.selectAll("g.x text")
+              .attr('dx', '30')
+              .attr('transform', "translate(-15,0) rotate(-90)")
+              .attr('display', 'none');
+      
+            // chart.selectAll('.bar')
+            //   .attr("fill", "url(#barBg)");
+          })
           .dimension(fruitDimension)
           .group(fakeGroup1);
       chart1.render();
