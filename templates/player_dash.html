@@ -22,7 +22,7 @@
 
   <!-- Bootstrap core CSS -->
   <link href="../static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="../static/bootstrap/css/dash_css.css" rel="stylesheet">
+  <link href="../static/bootstrap/css/player_dash.css" rel="stylesheet">
   <!-- <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/dc/2.1.9/dc.css"/> -->
 </head>
 <script src="../static/jquery/jquery.min.js"></script>
@@ -85,7 +85,7 @@
   <div id="dynamic_input">
         <div class="row">
                 <!-- <div class="col-md-3"></div> -->
-                <div class="col-md-3" id="first">
+                <div class="col-md-2" id="first">
                         <select id="players_data_input" class="form-control">
                                 <!-- <option value="0">Please select Range</option> -->
                                 <option value="1">0 - 3000</option>
@@ -93,7 +93,30 @@
                                 <option value="3">6000 - 10000</option>
                         </select>
                 </div>
-                <div class="col-md-3">
+                <!-- ['CDM'  'CAM' 'RWB' 'LWB'] -->
+
+                <div class="col-md-2" id="second">
+                        <select id="players_stat_input" class="form-control">
+                                <!-- <option value="0">Please select Range</option> -->
+                                <option value="0">All Players</option>
+                                <option value="ST">Striker</option>
+                                <option value="RW">Right Winger</option>
+                                <option value="LW">Left Winger</option>
+                                <option value="CB">Centre back</option>
+                                <option value="RM">Right Midfielder</option>
+                                <option value="CM">Centre Midfielder</option>
+                                <option value="LM">Left Midfielder</option>
+                                <option value="LB">Left Back</option>
+                                <option value="RB">Right Back</option>
+                                <option value="CF">Centre Forward</option>
+                                <option value="CDM">Centre Defense Midfielder</option>
+                                <option value="CAM">Centre Attack Midfielder</option>
+                                <option value="RWB">Right Wing Back</option>
+                                <option value="LWB">Left Wing Back</option>
+                                <!-- <option value="GK">Goal Keeper</option> -->
+                        </select>
+                </div>       
+                <div class="col-md-2">
                    <div class="col-md-2">
                     <button id="submit" type="button" class="btn btn-success">Reset</button>
                    </div> 
@@ -106,49 +129,49 @@
   <div class="dash_container" float="top">
       <div class="dash_col" id = "pie_cont" style="margin-top: 30px;">
         <!-- First One -->
+        <div id="chart" style="margin: 15px;"></div>
         <!-- <div id="continent" style="margin-left: 15px; margin-top: 30px;"></div> -->
       </div>
-      <div class="dash_col" id = "bar_char" style="margin-top: 30px;">
+      <div class="dash_col" id = "pre_pos_char">
           <!-- Third One -->
           <div id="chart" style="margin: 15px;"></div>
       </div>
-        <!-- <div class="dash_container"> -->
-            <div id = "rightbox"> 
-                <!-- <div style="text-align:right; margin:0px auto 0px auto;"> -->
-                   <div class="dash_col_extend" id = "row_char" style="margin-top: 30px;">
-                      <!-- Second One -->
-                      <!-- <div id="scatter" style="margin: 15px;"></div> -->
-                </div>
-              </div>
-      <!-- <div class="dash_col_extend" id = "row_char" style="margin-top: 30px;"> -->
-            <!-- Second One -->
-            <!-- <div id="scatter" style="margin: 15px;"></div> -->
-      <!-- </div> -->
-      <!-- <div class="dash_col_three" id = "player_stat" style="margin-top: 105px;"> -->
+      <div class="dash_col" id = "bar_char" style="margin-top: 30px;">
             <!-- Third One -->
-            <!-- <div id="chart" style="margin: 15px;"></div> -->
-        <!-- </div> -->
-   
+            <div id="chart" style="margin: 15px;"></div>
+        </div>
+        
   </div>
   <div class="dash_col_three" id = "player_stat" style="margin-top: 15px;">
       <!-- Third One -->
       <!-- <div id="chart" style="margin: 15px;"></div> -->
   </div>
 
-  <div class="dash_col_overall" id = "linechart" style="margin-top: 15px;">
-      <!-- Third One -->
-      <!-- <div id="chart" style="margin: 15px;"></div> -->
-  </div>
-
-  <div class="bottom-one" id = "wage" style="margin-top: 15px;">
-        <!-- Third One -->
-        <!-- <div id="chart" style="margin: 15px;"></div> -->
-    </div>
+  <div class="child" id="stat1"></div>
+    <div class="child" id="stat2"></div>
+    <div class="child" id="stat3"></div>
+    <div class="child" id="stat4"></div>
+    <div class="child" id="stat5"></div>
+    <div class="child" id="stat6"></div>
+    <div class="child" id="stat7"></div>
+    <div class="child" id="stat8"></div>
+    <div class="child" id="stat9"></div>
+    <!-- <div class="stats">
+        <div class="child" id="stat1"></div>
+        <div class="child" id="stat2"></div>
+        <div class="child" id="stat3"></div>
+        <div class="child" id="stat4"></div>
+        <div class="child" id="stat5"></div>
+        <div class="child" id="stat6"></div>
+        <div class="child" id="stat7"></div>
+        <div class="child" id="stat8"></div>
+        <div class="child" id="stat9"></div>
+    </div> -->
  
 
   <!-- Bootstrap core JavaScript -->
   <script src="../static/jquery/jquery.min.js"></script>
   <script src="../static/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="../static/bootstrap/js/my_render.js"></script>
+  <script src="../static/bootstrap/js/player_dash.js"></script>
   </body>
   </html>

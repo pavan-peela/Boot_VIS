@@ -8,6 +8,7 @@ app = Flask(__name__)
 
 
 dataset_file = pd.read_csv('Project_Dataset/fifa-18-dataset/CompleteDataset.csv', header = 0, nrows=10000)
+dataset_full = pd.read_csv('Project_Dataset/fifa-18-dataset/CompleteDataset.csv', header = 0, nrows=10000)
 Filter = [
     'Name', 
     'Age', 
@@ -19,8 +20,14 @@ Filter = [
     'Wage', 
     'Preferred Positions'
 ]
+
 dataset = pd.DataFrame(dataset_file, columns=Filter)
+
 dataset = dataset.drop_duplicates(subset='Name')
+dataset_full = dataset_full.drop_duplicates(subset='Name')
+
+print(dataset_full.columns)
+dataset_full = dataset_full.drop(['Photo','Flag','Club Logo', 'ID'], axis=1)
 #data cleaning
 def str2number(amount):
     if amount[-1] == 'M':
@@ -32,11 +39,16 @@ def str2number(amount):
     
 dataset['ValueNum'] = dataset['Value'].apply(lambda x: str2number(x))
 dataset['WageNum'] = dataset['Wage'].apply(lambda x: str2number(x))
+
+dataset_full['ValueNum'] = dataset_full['Value'].apply(lambda x: str2number(x))
+dataset_full['WageNum'] = dataset_full['Wage'].apply(lambda x: str2number(x))
+
 # print('null',dataset['Name'].isna().sum())
 for each in dataset.columns:
     print(each + ' : ' + str(dataset[each].isna().sum()))
 dataset['position'] = dataset['Preferred Positions'].apply(lambda x: x.split(" ")[0])
-# print(dataset['position'])
+# print(dataset['position'].unique())
+dataset_full['position'] = dataset_full['Preferred Positions'].apply(lambda x: x.split(" ")[0])
 
 
 #divide players into ten classes basing on their value and income
@@ -90,9 +102,12 @@ def find_continent(x, continents_list):
     return np.NaN
 
 dataset['Continent'] = dataset['Nationality'].apply(lambda x: find_continent(x, continents))
+dataset_full['Continent'] = dataset_full['Nationality'].apply(lambda x: find_continent(x, continents))
 dataset['total'] = 1
+dataset_full['total'] = 1
 dataset['json'] = dataset.apply(lambda x: x.to_json(), axis=1)
 dataset.dropna(how='any', inplace=True)
+dataset_full.dropna(how='any', inplace=True)
 print(dataset['Club'].isnull().sum())
 # dataset.to_json('temp.json', orient='records', lines=True)
 # print(dataset['json'])
@@ -197,6 +212,9 @@ def dashboard_final():
 @app.route("/my_render")
 def my_rendering():    
     return render_template('my_render.html')
+@app.route("/play_dash")
+def player_dashing():    
+    return render_template('player_dash.html')
 
 
 @app.route("/value")
@@ -251,6 +269,59 @@ def range_include():
         dfRange = dataset.iloc[start:end]
         print(start, end, 'values')
         return pd.json.dumps(dfRange.to_dict('records'))
+
+@app.route("/player_dash", methods = ['POST'])
+def player_dashboard():
+    # print(len(dataset))
+    temp = request.get_json()
+    print('input received : ', temp)
+
+    temp = temp.split(",")
+    range_sel = temp[0]
+    pos = temp[1]
+
+    if range_sel == '1':
+        if pos == '0':
+            df = dataset_full.sort_values("Overall", ascending=False).head(3000).reset_index()
+            return pd.json.dumps(df.to_dict('records'))
+
+        df = dataset_full.sort_values("Overall", ascending=False).head(3000).reset_index()
+        data_3000 = df[df['position'] == pos]
+        # print(data_3000)
+        return pd.json.dumps(data_3000.to_dict('records'))
+    if range_sel == '2':
+        integer_location = np.where(dataset_full.index == 3000)[0][0]
+        start = max(0, integer_location +43+382)
+        end = max(1, 6000)
+        dfRange = dataset_full.iloc[start:end]
+        print(start, end, 'values')
+
+        if pos == '0':
+            df = dfRange.sort_values("Overall", ascending=False).head(3000).reset_index()
+            return pd.json.dumps(df.to_dict('records'))
+
+        df = dfRange.sort_values("Overall", ascending=False).head(3000).reset_index()
+        data_3000 = df[df['position'] == pos]
+        # print(data_3000)
+        return pd.json.dumps(data_3000.to_dict('records'))
+
+    if range_sel == '3':
+        integer_location = np.where(dataset.index == 6000)[0][0]
+        start = max(0, integer_location +297)
+        end = max(1, 10000)
+        dfRange = dataset.iloc[start:end]
+        print(start, end, 'values')
+        
+        if pos == '0':
+            df = dfRange.sort_values("Overall", ascending=False).head(3000).reset_index()
+            return pd.json.dumps(df.to_dict('records'))
+
+        df = dfRange.sort_values("Overall", ascending=False).head(3000).reset_index()
+        data_3000 = df[df['position'] == pos]
+        # print(data_3000)
+        return pd.json.dumps(data_3000.to_dict('records'))
+
+
 
 # print(dataset['total'])
 if __name__ == "__main__":

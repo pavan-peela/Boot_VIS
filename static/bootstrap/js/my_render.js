@@ -36,7 +36,7 @@ $( document ).ready(function() {
         }
     });
 
-});
+    });
 
 });
 
@@ -358,12 +358,73 @@ function draw_charts(raw_data){
     // WAge chart
     // var wage_chart = dc.barChart('#wage');
   
-    // let wage_dim = data.dimension(function(data) {
-    //         return [ data.Name, data.WageNum, data.ValueNum ];
-    //      });
-    // let wage_group = wage_dim.group().reduceSum(item => item.WageNum);
+    let wage_dim = data.dimension(function(data) {
+            return [ data.Name];
+         });
+    let wage_group = wage_dim.group().reduceSum(item => item.WageNum);
 
     // const res111 = wage_group.all()
     // console.log("WAGE ion:")
     // console.log(res111)
+    chart3 = dc.barChart('#wage');
+    var fakeGroup3 = getTops1(wage_group);
+    
+    chart3
+          .width(540)
+          .height(350)
+          .margins({top: 10, right: 10, bottom: 80, left: 50})
+          .x(d3.scaleBand())
+          .y(d3.scaleLinear().domain([0,600000]))
+        //   .ordinalColors(['#e41a1c','#377eb8','#4daf4a','#984ea3','#ff7f00','#ffff33','#a65628'])
+          .xUnits(dc.units.ordinal)
+          .brushOn(true)
+          .barPadding(0.4)
+          .outerPadding(0.15)
+          .on("preRedraw", function (chart) {
+                chart.rescale();
+            })
+            .on("preRender", function (chart) {
+                chart.rescale();
+            })
+          .ordinalColors(['url(#barBg)','rgb(255, 127, 14)'])
+          .renderlet(function (chart1) {
+
+            const barBG = d3.select('#linechart')
+                            .select('svg')
+                            .append('defs')
+                            .append("linearGradient");
+      
+            // https://stackoverflow.com/questions/56118745/barchart-svg-gradient-fill
+            barBG
+              .attr("id", "barBg")
+              .attr("x1", "0")
+              .attr("x2", "0")
+              .attr("y1", "200")
+              .attr("y2", "00")
+              .attr("gradientUnits", "userSpaceOnUse");
+      
+            barBG
+              .append("stop")
+              .attr("offset", "0%")
+              .attr("stop-color", "rgb(31, 119, 180)")
+              .attr("stop-opacity", "0.1");
+      
+      
+            barBG
+              .append("stop")
+              .attr("offset", "100%")
+              .attr("stop-color", "rgb(31, 119, 180)")
+              .attr("stop-opacity", "1");
+      
+            chart1.selectAll("g.x text")
+            //   .attr('dx', '30')
+              .attr('transform', "translate(-24,22) rotate(-45)");
+            //   .attr('display', 'none');
+      
+            // chart.selectAll('.bar')
+            //   .attr("fill", "url(#barBg)");
+          })
+          .dimension(wage_dim)
+          .group(fakeGroup3);
+      chart3.render();
 }
