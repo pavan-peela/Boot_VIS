@@ -89,6 +89,13 @@ function draw_charts(raw_data){
         .label(function(d) {
             return d.key + ': ' + d.value; 
         })
+        // .on('pretransition', function(chart) {
+        //     chart.selectAll('text.pie-slice').text(function(d) {
+        //         // console.log("pie 3 d")
+        //         // console.log(d)
+        //         return dc.utils.printSingleValue(d.data.key );
+        //     })
+        // })
         .dimension(continent_category)
         .group(continent_group);
     pie1.render();
@@ -120,8 +127,8 @@ function draw_charts(raw_data){
         // })
         .on('pretransition', function(chart) {
             chart.selectAll('text.pie-slice').text(function(d) {
-                console.log("pie 3 d")
-                console.log(d)
+                // console.log("pie 3 d")
+                // console.log(d)
                 return dc.utils.printSingleValue(d.data.key );
             })
         })
@@ -137,7 +144,7 @@ function draw_charts(raw_data){
     var chart = dc.rowChart("#row_char");
     chart
         .width(500)
-        .height(800)
+        .height(760)
         .dimension(club_category)
         .group(fakeGroup)
         .transitionDuration(1000)
@@ -149,14 +156,22 @@ function draw_charts(raw_data){
 
 
     //  Preferred Positions
-    let pre_pos_dimension = data.dimension(item => item.pre_pos);
+    let pre_pos_dimension = data.dimension(item => item.position);
     let pre_pos_group = pre_pos_dimension.group().reduceSum(item => 1); 
 
     const res = pre_pos_group.all()
     console.log("Pre Pos Dimension:")
     console.log(res)
 
-    var fakeGroup3 = getTops(pre_pos_group);
+    function getTops_position(source_group) {
+        return {
+            all: function () {
+                return source_group.top(30);
+            }
+        };
+    }
+
+    var fakeGroup3 = getTops_position(pre_pos_group);
     // console.log(fakeGroup)
 
     var pie3 = dc.pieChart("#player_stat");
@@ -170,21 +185,18 @@ function draw_charts(raw_data){
         .slicesCap(6)
         // .attr("transform", "translate(50,50")
         .legend(dc.legend().x(400).y(0))
-        .label(function(d) {
-            return d.key + ': ' + d.value; 
-        })
+        // .label(function(d) {
+        //     return d.key + ': ' + d.value; 
+        // })
         .dimension(pre_pos_dimension)
         .group(fakeGroup3);
 
     pie3.on('pretransition', function(chart) {
-        chart.selectAll('.dc-legend-item text')
-            .text('')
-            .append('tspan')
-            .text(function(d) { return d.key; })
-            .append('tspan')
-            .attr('x', 100)
-            .attr('text-anchor', 'end')
-            .text(function(d) { return d.value; });
+        chart.selectAll('text.pie-slice').text(function(d) {
+            // console.log("pie 3 d")
+            // console.log(d)
+            return dc.utils.printSingleValue(d.data.key );
+        })
     });
     pie3.render();
 
@@ -251,15 +263,22 @@ function draw_charts(raw_data){
         //   fruitDimension = ndx.dimension(function(d) {console.log("=-=-=");return d.Overall;}),
         //   sumGroup       = fruitDimension.group().reduceSum(function(d) {return d.Overall;});
       chart1
-          .width(500)
-          .height(300)
+          .width(600)
+          .height(350)
+          .margins({top: 10, right: 10, bottom: 80, left: 40})
           .x(d3.scaleBand())
           .y(d3.scaleLinear().domain([60,93]))
         //   .ordinalColors(['#e41a1c','#377eb8','#4daf4a','#984ea3','#ff7f00','#ffff33','#a65628'])
           .xUnits(dc.units.ordinal)
-          .brushOn(false)
+          .brushOn(true)
           .barPadding(0.4)
           .outerPadding(0.15)
+          .on("preRedraw", function (chart) {
+                chart.rescale();
+            })
+            .on("preRender", function (chart) {
+                chart.rescale();
+            })
           .ordinalColors(['url(#barBg)','rgb(255, 127, 14)'])
           .renderlet(function (chart1) {
 
@@ -291,9 +310,9 @@ function draw_charts(raw_data){
               .attr("stop-opacity", "1");
       
             chart1.selectAll("g.x text")
-              .attr('dx', '30')
-              .attr('transform', "translate(-15,0) rotate(-90)")
-              .attr('display', 'none');
+            //   .attr('dx', '30')
+              .attr('transform', "translate(-35,19)");
+            //   .attr('display', 'none');
       
             // chart.selectAll('.bar')
             //   .attr("fill", "url(#barBg)");
@@ -327,6 +346,24 @@ function draw_charts(raw_data){
     //       .group(fakeGroup1);
     // //   chart.render();
     // chart123.render();
-    
+    // chart123.filter();
 
+    //  Testing the bubble and other charts
+    // var bub_chart = dc.bubbleChart('#bubble');
+
+    // var bubble_dim = data.dimension(function(data) {
+    //     return [ data.Name, data.Continent, data.Overall ];
+    //  });
+
+    // WAge chart
+    // var wage_chart = dc.barChart('#wage');
+  
+    // let wage_dim = data.dimension(function(data) {
+    //         return [ data.Name, data.WageNum, data.ValueNum ];
+    //      });
+    // let wage_group = wage_dim.group().reduceSum(item => item.WageNum);
+
+    // const res111 = wage_group.all()
+    // console.log("WAGE ion:")
+    // console.log(res111)
 }

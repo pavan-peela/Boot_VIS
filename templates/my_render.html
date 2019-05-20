@@ -6,7 +6,10 @@
                 margin-right: 70px;
                 width:25%; 
                 height:280px; 
-            }</style>
+            }
+            .dc-chart .pie-slice.external {
+    fill: white;
+}</style>
 <head>
 
   <meta charset="utf-8">
@@ -20,7 +23,7 @@
   <!-- Bootstrap core CSS -->
   <link href="../static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link href="../static/bootstrap/css/dash_css.css" rel="stylesheet">
-  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/dc/2.1.9/dc.css"/>
+  <!-- <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/dc/2.1.9/dc.css"/> -->
 </head>
 <script src="../static/jquery/jquery.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -129,10 +132,15 @@
       <!-- <div id="chart" style="margin: 15px;"></div> -->
   </div>
 
-  <div class="dash_col" id = "linechart" style="margin-top: 15px;">
+  <div class="dash_col_overall" id = "linechart" style="margin-top: 15px;">
       <!-- Third One -->
       <!-- <div id="chart" style="margin: 15px;"></div> -->
   </div>
+
+  <div class="bottom-one" id = "wage" style="margin-top: 15px;">
+        <!-- Third One -->
+        <!-- <div id="chart" style="margin: 15px;"></div> -->
+    </div>
  
 
   <!-- Bootstrap core JavaScript -->

@@ -32,6 +32,12 @@ def str2number(amount):
     
 dataset['ValueNum'] = dataset['Value'].apply(lambda x: str2number(x))
 dataset['WageNum'] = dataset['Wage'].apply(lambda x: str2number(x))
+# print('null',dataset['Name'].isna().sum())
+for each in dataset.columns:
+    print(each + ' : ' + str(dataset[each].isna().sum()))
+dataset['position'] = dataset['Preferred Positions'].apply(lambda x: x.split(" ")[0])
+# print(dataset['position'])
+
 
 #divide players into ten classes basing on their value and income
 max_value = float(dataset['ValueNum'].max() + 1)
