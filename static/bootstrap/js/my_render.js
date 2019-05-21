@@ -3,7 +3,10 @@ console.log("my_render.js load!")
 $( document ).ready(function() {
     console.log( "ready!" );
     $('#submit').on('click', function (){
-
+        // divTest = document.getElementById('headers');
+       $('#headers').show();
+       $('#headers_two').show();
+       $('#headers_pop').show();
 
     // $.ajax({
     //     type: 'GET',
