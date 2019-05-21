@@ -184,7 +184,7 @@ function draw_charts(raw_data){
         .externalRadiusPadding(50)
         .slicesCap(6)
         // .attr("transform", "translate(50,50")
-        .legend(dc.legend().x(400).y(0))
+        .legend(dc.legend().x(420).y(0))
         // .label(function(d) {
         //     return d.key + ': ' + d.value; 
         // })

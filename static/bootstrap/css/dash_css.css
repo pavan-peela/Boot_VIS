@@ -78,6 +78,28 @@ div.dash_container{
     margin-top: 5px;
     margin-left: 240px;
 }
+#pie_count svg{
+    margin-top: 36px;
+}
+svg{
+    margin-top: 20px;
+}
+/* Headers Styling */
+#hearders{
+    color: antiquewhite;
+    margin-left: 180px;
+    padding-bottom: 20px;
+    text-decoration: underline;
+}
+#headers_srow{
+    margin-left: -300px;
+    color: antiquewhite;
+    /* padding-bottom: 20px; */
+    text-decoration: underline;
+}
+
+
+
 /* DC.js Styling */
 #linechart .x.axis text {
     text-anchor: end !important;
