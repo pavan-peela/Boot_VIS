@@ -55,7 +55,28 @@ div.dash_container{
     width: 300px;
     padding-left: 40px;
 }
-
+#pre_pos_char svg{
+    margin-top: -10px;
+}
+svg{
+    margin-top: 30px;
+}
+/* Headers Styling */
+#headers, #headers_two, #headers_three{
+    color: antiquewhite;
+    margin-left: 194px;
+    padding-bottom: 20px;
+    text-decoration: underline;
+}
+#headers_childs{
+    color: antiquewhite;
+    margin-left: 10px;
+    padding-bottom: 20px;
+    text-decoration: underline;
+}
+.child{
+    margin-left: 30px;
+}
 
 #submit{
     /* float: right; */

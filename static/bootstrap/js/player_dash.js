@@ -1,8 +1,16 @@
 console.log("Player_Dash.js load!")
 // console.log()
+$('#headers').hide();
+$('#headers_two').hide();
+$('#headers_three').hide();
+$('.x1').hide();
 $( document ).ready(function() {
     console.log( "ready!" );
     $('#submit').on('click', function (){
+        $('#headers').show();
+        $('#headers_three').show();
+        $('#headers_two').show();
+        $('.x1').show();
 
 
     // $.ajax({
@@ -112,7 +120,7 @@ function draw_charts(raw_data){
     var pie3 = dc.pieChart("#pre_pos_char");
     pie3
         .width(500)
-        .height(400)
+        .height(390)
         .innerRadius(30)
         .transitionDuration(1000)
         .externalLabels(30)
@@ -230,7 +238,7 @@ function draw_charts(raw_data){
     var chart = dc.rowChart("#player_stat");
     chart
         .width(500)
-        .height(760)
+        .height(830)
         .dimension(dim)
         .group(fakeGrp23)
         .transitionDuration(1000)
