@@ -311,4 +311,16 @@ div.dash_container{
   
   .dc-hard .number-display {
     float: none; }
+
+.dc-table-head{
+    color: rgb(233, 221, 221);
+    padding-right: 20px;
+}
+.dc-table-column{
+    padding-right: 40px;
+}
+
+.dc-table-row{
+    color: rgb(178, 197, 209);
+}
   

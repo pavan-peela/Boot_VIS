@@ -63,7 +63,7 @@ function draw_charts(raw_data){
 
     // Club Group
     let club_category = data.dimension(item => item.Club)
-    var club_group = club_category.group().reduceSum(item => 1)
+    var club_group = club_category.group().reduceSum(item => item.ValueNum)
 
     console.log("Club Dimension:")
     
@@ -427,4 +427,24 @@ function draw_charts(raw_data){
           .dimension(wage_dim)
           .group(fakeGroup3);
       chart3.render();
+
+    //   Count chart
+    var tableChart = dc.dataTable("#data_count");
+    // countChart
+    //       .crossfilter(data)
+    //       .groupAll(data.groupAll());
+    // countChart.render();
+    tableChart
+        .dimension(fruitDimension)
+        // .group(function (data) {
+        //     return ~~(data.Club);
+        // })
+        .size(20)
+        .columns(['Name', 'Overall', 'Club', 'Wage', 'Value','position'])
+        .sortBy(function (d) {
+            // console.log(d)
+            return d.Overall;
+        })
+        .order(d3.descending);
+    tableChart.render();
 }
