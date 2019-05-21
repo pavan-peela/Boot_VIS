@@ -17,6 +17,11 @@
   <style>
       .sv{
           margin-left: 400px;
+          float:center; 
+      }
+      .sv1{
+          /* margin-left: 400px; */
+          float:left; 
       }
   </style>
 
@@ -29,9 +34,9 @@
   <script src="../static/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="../static/bootstrap/js/my_js.js"></script>
 
-
-<body onload="callme('/plot')">
-
+<body onload="caller()">
+<!-- <body onload="callme('/plot')">
+  <body onload="callme4('/piechart')"> -->
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
     <div class="container">
@@ -71,20 +76,24 @@
       </div>
     </div>
   </nav>
-  <button data-hover="Plot ->" onclick="callme4(id)" id="/piechart"><div>Piechart</div></button>
+  <!-- <button data-hover="Plot ->" onclick="callme4(id)" id="/piechart"><div>Piechart</div></button> -->
     <!-- <div class="row" > -->
         <h3 align="center">PLAYERS DISTRIBUTION ACCORDING TO THEIR COUNTRY</h3>
     <!-- </div> -->
-    <div class="sv" ><svg width="660" height="660" id="svg2"></svg></div>
-    <div class="box">
+    <div class="sv" ><svg width="660" height="660" id="svg2" ></svg></div>
+    <!-- <div class="sv1" ><svg width="600" height="600" id="svg5" ></svg></div> -->
+    <!-- <div class="box">
 
       <svg width="680" height="700" id="svg5"></svg>
        
-</div>
+</div> -->
    
   <script>
 
-
+function caller(){
+  callme('/plot')    
+  // callme4('/piechart')
+}
 
 function callme(a){
     console.log("_____")
@@ -99,6 +108,7 @@ function callme(a){
         $("#error").html(result);
         }
     });
+    // callme4('/piechart')
 }
 
 function callme4(a){
@@ -112,7 +122,8 @@ function callme4(a){
 	  error: function(result) {
 		$("#error").html(result);
 	  }
-	});
+  });
+  // callme('/plot')
 }
 
 
@@ -196,37 +207,7 @@ var svg = d3.select("#svg5").append("svg")
         
 
 }
-function tabulate(data, columns) {
-		var table = d3.select('body').append('table')
-		var thead = table.append('thead')
-		var	tbody = table.append('tbody');
 
-		// append the header row
-		thead.append('tr')
-		  .selectAll('th')
-		  .data(columns).enter()
-		  .append('th')
-		    .text(function (column) { return column; });
-
-		// create a row for each object in the data
-		var rows = tbody.selectAll('tr')
-		  .data(data)
-		  .enter()
-		  .append('tr');
-
-		// create a cell in each row for each column
-		var cells = rows.selectAll('td')
-		  .data(function (row) {
-		    return columns.map(function (column) {
-		      return {column: column, value: row[column]};
-		    });
-		  })
-		  .enter()
-		  .append('td')
-		    .text(function (d) { return d.value; });
-
-	  return table;
-	}
 
 
 
